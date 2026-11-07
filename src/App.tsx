@@ -122,8 +122,9 @@ export default function App() {
       )}
 
       <footer>
-        <p><a href="https://github.com/Mapaor/ocr-en-catala" target="_blank" rel="noreferrer">Codi font</a></p>
+        <p><a href="https://github.com/Mapaor/math-ocr-cat" target="_blank" rel="noreferrer">Codi font</a></p>
         <p>El model s’executa al navegador. La primera càrrega pot trigar una mica.</p>
+        <p className="source">Motor: <a href="https://www.npmjs.com/package/pix2text-mfr-web" target="_blank" rel="noreferrer">pix2text-mfr-web a npm</a></p>
         <p className="source">Model: <a href={MODEL_URL} target="_blank" rel="noreferrer">Pix2Text MFR 1.5 a Hugging Face</a></p>
       </footer>
     </main>
