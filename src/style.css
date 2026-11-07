@@ -1,0 +1,60 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  background: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, select, textarea { font: inherit; }
+a { color: #1565c0; }
+
+.page { width: min(760px, calc(100% - 32px)); margin: 24px auto 0; }
+.language-row { display: flex; align-items: center; gap: 9px; margin-bottom: 16px; font-size: 16px; }
+.language-row select { color: #222; background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; padding: 5px 26px 5px 8px; }
+.drop-area {
+  min-height: 220px;
+  border: 2px dashed #c8c8c8;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 22px;
+  transition: border-color .15s, background .15s;
+}
+.drop-area:hover, .drop-area:focus-visible { border-color: #7b9ac1; background: #fafcff; outline: none; }
+.drop-area.has-file { cursor: default; border-style: solid; border-color: #e0e0e0; flex-direction: column; gap: 8px; }
+.drop-copy { display: grid; gap: 8px; color: #242424; line-height: 1.5; }
+.drop-copy small { font-size: 14px; color: #666; }
+.preview-wrap { display: flex; flex-direction: column; align-items: center; max-width: 100%; gap: 10px; }
+.preview-wrap img { display: block; max-width: 100%; max-height: 420px; object-fit: contain; }
+.filename { color: #666; font-size: 13px; overflow-wrap: anywhere; }
+.actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+button { border-radius: 4px; cursor: pointer; padding: 8px 13px; }
+.primary { background: #2767ad; color: white; border: 1px solid #2767ad; }
+.primary:hover:not(:disabled) { background: #1e568f; }
+.primary:disabled { opacity: .65; cursor: wait; }
+.quiet { border: 1px solid #d1d1d1; color: #333; background: white; }
+.quiet:hover { background: #f5f5f5; }
+.status { margin: 14px 0 0; color: #555; font-size: 14px; }
+.status.error { color: #a52626; }
+.result { margin-top: 18px; }
+.result-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.result-heading h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.result textarea { width: 100%; min-height: 88px; resize: vertical; padding: 11px; border: 1px solid #ccc; border-radius: 4px; color: #222; line-height: 1.5; }
+footer { margin-top: 24px; font-size: 14px; line-height: 1.45; }
+footer p { margin: 8px 0; }
+footer .source { color: #666; font-size: 12px; }
+
+@media (max-width: 520px) {
+  .page { width: calc(100% - 24px); margin-top: 16px; }
+  .drop-area { min-height: 190px; padding: 16px; }
+  .drop-copy { font-size: 15px; }
+}
