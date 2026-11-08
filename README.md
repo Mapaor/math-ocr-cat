@@ -1,34 +1,29 @@
-# OCR de fórmules
+# OCR de fórmules client-side
 
-Una aplicació Vite + TypeScript per reconèixer fórmules matemàtiques en imatges des del navegador. La interfície segueix l’estil senzill d’[OCR en Català](https://ocr.cat/) i l’estructura de codi de [Mapaor/ocr-en-catala](https://github.com/Mapaor/ocr-en-catala).
+Web client-side feta amb Vite que utilitza [`pix2text-mfr-web`](https://www.npmjs.com/package/pix2text-mfr-web) com a API pel model [Pix2Text MFR 1.5](https://huggingface.co/breezedeus/pix2text-mfr-1.5) de reconeixement de fórmules (Math Formula Recognition] adaptat per ONNX Runtime for Web.
 
-La inferència segueix l’API del paquet [`pix2text-mfr-web`](https://www.npmjs.com/package/pix2text-mfr-web): `MfrRecognizer.load({ modelBaseUrl })` i `recognizer.recognize(imageBlob)`. Per defecte, el paquet baixa el model [Pix2Text MFR 1.5](https://huggingface.co/breezedeus/pix2text-mfr-1.5) directament de Hugging Face durant la primera càrrega i el guarda a la memòria cau del navegador.
+La gràcia d'utilitzar [`math.ocr.cat`](https://math.ocr.cat) respecte [`tex.ocr.cat`](https://tex.ocr.cat) és que són pràcticament igual de ràpids per fórmules soles i el primer córrer al navegador, de manera que per una banda seguirà funcionant si un dia el meu servidor s'espatlla, per altra banda no gasta RAM ni CPU del meu servidor i per altra un cop el model està carregat pot funcionar sense connexió a internet. Així que recomano si és només per fórmules utilitzar aquest client-side.
 
-Per baixar els fitxers del model al projecte i servir-los localment:
+## Desenvolupament
 
-```sh
-hf download breezedeus/pix2text-mfr-1.5 --local-dir public/pix2text-mfr-1.5
-```
-
-Crea `.env.local` amb:
+Si crees una versió de MFR-1.5 diferent i la guardes a HF o a un CDN ho pots posar com a variable d'entorn.
 
 ```sh
 VITE_MFR_MODEL_BASE_URL=/pix2text-mfr-1.5
 ```
 
-La inferència s’executa al navegador. La primera càrrega pot trigar una mica.
-
-## Desenvolupament
+Per executar la app en mode desenvolupament
 
 ```sh
 npm install
 npm run dev
 ```
 
-Per generar la versió de producció:
+Per generar la versió en mode producció (per mirar si aniria bé a Vercel)
 
 ```sh
 npm run build
 ```
 
-Admet imatges seleccionades, arrossegades a la zona de càrrega o enganxades des del porta-retalls. El resultat es pot editar i copiar com a LaTeX.
+## Llicència
+MIT
