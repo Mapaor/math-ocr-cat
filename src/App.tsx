@@ -10,17 +10,19 @@ export default function App() {
   const [latex, setLatex] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const [message, setMessage] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const recognizeFile = useCallback(async (nextFile: File) => {
     setStatus('loading')
-    setMessage('Carregant el model de reconeixement…')
+    setMessage('')
+    setCopied(false)
     try {
       setStatus('recognizing')
       setMessage('Reconeixent la fórmula…')
       const text = await recognizeFormula(nextFile)
       setLatex(text)
       setStatus('done')
-      setMessage(text ? 'Fórmula reconeguda.' : 'No s’ha detectat cap fórmula.')
+      setMessage('')
     } catch (error) {
       setStatus('error')
       setMessage(error instanceof Error ? error.message : 'S’ha produït un error durant el reconeixement.')
@@ -49,16 +51,8 @@ export default function App() {
 
   const copyResult = async () => {
     await navigator.clipboard.writeText(latex)
-    setMessage('La fórmula s’ha copiat al porta-retalls.')
-  }
-
-  const clear = () => {
-    setFile(null)
-    setPreview('')
-    setLatex('')
-    setStatus('idle')
-    setMessage('')
-    if (inputRef.current) inputRef.current.value = ''
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1200)
   }
 
   return (
@@ -103,18 +97,47 @@ export default function App() {
           )}
         </section>
 
+        {message && <p className="status error" role="alert">{message}</p>}
+
         {file && (
-          <div className="actions">
-            <button className="quiet" onClick={clear}>Esborra</button>
-          </div>
-        )}
-
-        {message && <p className={`status ${status === 'error' ? 'error' : ''}`} role="status">{message}</p>}
-
-        {status === 'done' && (
-          <section className="result" aria-live="polite">
-            <div className="result-heading"><h2>Resultat LaTeX</h2><button className="quiet" onClick={copyResult}>{message.includes('copiat') ? 'Copiat!' : 'Copia'}</button></div>
-            <textarea value={latex} onChange={(event) => setLatex(event.target.value)} aria-label="Resultat LaTeX" />
+          <section className="result-card">
+            <div className="result-header">
+              <span>Resultat</span>
+              <button
+                className={`copy-button${copied ? ' copied' : ''}`}
+                onClick={copyResult}
+                disabled={!latex}
+                aria-label={copied ? 'LaTeX copiat' : 'Copia el LaTeX'}
+                title={copied ? 'Copiat' : 'Copia el LaTeX'}
+              >
+                {copied ? (
+                  <svg aria-hidden="true" viewBox="0 0 16 16">
+                    <path d="m2.75 8.75 3.5 3.5 7-7.5" />
+                  </svg>
+                ) : (
+                  <svg aria-hidden="true" viewBox="0 0 48 48">
+                    <path d="M13 12.432v-4.62A2.813 2.813 0 0 1 15.813 5h24.374A2.813 2.813 0 0 1 43 7.813v24.375A2.813 2.813 0 0 1 40.187 35h-4.67" />
+                    <path d="M32.188 13H7.811A2.813 2.813 0 0 0 5 15.813v24.374A2.813 2.813 0 0 0 7.813 43h24.375A2.813 2.813 0 0 0 35 40.187V15.814A2.813 2.813 0 0 0 32.187 13Z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {(status === 'loading' || status === 'recognizing') && (
+              <div className="processing-state" role="status" aria-live="polite">
+                <div className="progress-track"><div className="progress-bar" /></div>
+                <span className="processing-label">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /></svg>
+                  Processant
+                </span>
+              </div>
+            )}
+            <textarea
+              value={latex}
+              readOnly
+              spellCheck={false}
+              placeholder="El LaTeX reconegut apareixerà aquí..."
+              aria-label="Resultat LaTeX"
+            />
           </section>
         )}
 
