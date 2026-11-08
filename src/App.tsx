@@ -18,7 +18,6 @@ export default function App() {
     setCopied(false)
     try {
       setStatus('recognizing')
-      setMessage('Reconeixent la fórmula…')
       const text = await recognizeFormula(nextFile)
       setLatex(text)
       setStatus('done')

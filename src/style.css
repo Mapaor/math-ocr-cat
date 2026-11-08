@@ -18,7 +18,8 @@ a { color: inherit; }
 .page { width: min(672px, 100%); margin: 0 auto; padding: 24px 8px; }
 .content { width: 100%; margin-top: 32px; }
 .page-heading { margin: 0 0 24px; }
-.page-heading h2 { margin: 0 0 8px; font-size: 18px; line-height: 1.75; font-weight: 600; }
+.page-heading h2, footer h2 { font-size: 18px; line-height: 1.75; font-weight: 600; }
+.page-heading h2 { margin: 0 0 8px; }
 .page-heading p { margin: 0; color: #6b7280; line-height: 1.5; }
 .drop-area {
   min-height: 15rem;
@@ -53,7 +54,7 @@ button { border-radius: 6px; cursor: pointer; padding: 9px 14px; transition: bac
 .status.error { color: #ef4444; }
 .result-card { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding: .75rem; border: 1px solid #e5e7eb; border-radius: .5rem; background: #fff; box-shadow: 0 1px 3px #1118271a; }
 .result-header { display: flex; align-items: center; justify-content: space-between; min-height: 1.75rem; color: #374151; font-size: .875rem; font-weight: 600; }
-.result-card textarea { width: 100%; min-height: 20rem; resize: vertical; padding: .5rem; border: 1px solid #d1d5db; border-radius: .25rem; background: #f9fafb; color: inherit; font-size: .75rem; line-height: 1.5; }
+.result-card textarea { width: 100%; min-height: 8rem; resize: vertical; padding: .5rem; border: 1px solid #d1d5db; border-radius: .25rem; background: #f9fafb; color: inherit; font-size: .75rem; line-height: 1.5; }
 .copy-button { display: grid; width: 1.75rem; height: 1.75rem; place-items: center; padding: 0; border: 0; border-radius: .25rem; background: #eff6ff; color: #3b82f6; }
 .copy-button:hover:not(:disabled) { background: #dbeafe; }
 .copy-button.copied { background: #ccfbf1; color: #14b8a6; }
