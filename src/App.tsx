@@ -11,14 +11,29 @@ export default function App() {
   const [status, setStatus] = useState<Status>('idle')
   const [message, setMessage] = useState('')
 
+  const recognizeFile = useCallback(async (nextFile: File) => {
+    setStatus('loading')
+    setMessage('Carregant el model de reconeixement…')
+    try {
+      setStatus('recognizing')
+      setMessage('Reconeixent la fórmula…')
+      const text = await recognizeFormula(nextFile)
+      setLatex(text)
+      setStatus('done')
+      setMessage(text ? 'Fórmula reconeguda.' : 'No s’ha detectat cap fórmula.')
+    } catch (error) {
+      setStatus('error')
+      setMessage(error instanceof Error ? error.message : 'S’ha produït un error durant el reconeixement.')
+    }
+  }, [])
+
   const useFile = useCallback((nextFile?: File) => {
     if (!nextFile || !nextFile.type.startsWith('image/')) return
     setFile(nextFile)
     setLatex('')
-    setMessage('')
-    setStatus('idle')
     setPreview(URL.createObjectURL(nextFile))
-  }, [])
+    void recognizeFile(nextFile)
+  }, [recognizeFile])
 
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview) }, [preview])
 
@@ -31,23 +46,6 @@ export default function App() {
     window.addEventListener('paste', onPaste)
     return () => window.removeEventListener('paste', onPaste)
   }, [useFile])
-
-  const runRecognition = async () => {
-    if (!file) return
-    setStatus('loading')
-    setMessage('Carregant el model de reconeixement…')
-    try {
-      setStatus('recognizing')
-      setMessage('Reconeixent la fórmula…')
-      const text = await recognizeFormula(file)
-      setLatex(text)
-      setStatus('done')
-      setMessage(text ? 'Fórmula reconeguda.' : 'No s’ha detectat cap fórmula.')
-    } catch (error) {
-      setStatus('error')
-      setMessage(error instanceof Error ? error.message : 'S’ha produït un error durant el reconeixement.')
-    }
-  }
 
   const copyResult = async () => {
     await navigator.clipboard.writeText(latex)
@@ -75,10 +73,10 @@ export default function App() {
           className={`drop-area${file ? ' has-file' : ''}`}
           onDragOver={(event) => event.preventDefault()}
           onDrop={(event) => { event.preventDefault(); useFile(event.dataTransfer.files[0]) }}
-          onClick={() => !file && inputRef.current?.click()}
-          role={file ? undefined : 'button'}
-          tabIndex={file ? undefined : 0}
-          onKeyDown={(event) => { if (!file && (event.key === 'Enter' || event.key === ' ')) inputRef.current?.click() }}
+          onClick={() => inputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') inputRef.current?.click() }}
           aria-label="Selecciona o deixa anar una imatge"
         >
           <input
@@ -107,9 +105,6 @@ export default function App() {
 
         {file && (
           <div className="actions">
-            <button className="primary" onClick={runRecognition} disabled={status === 'loading' || status === 'recognizing'}>
-              {status === 'loading' || status === 'recognizing' ? 'Reconeixent…' : 'Reconeix la fórmula'}
-            </button>
             <button className="quiet" onClick={clear}>Esborra</button>
           </div>
         )}
