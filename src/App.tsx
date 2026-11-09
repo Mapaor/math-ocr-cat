@@ -134,7 +134,7 @@ export default function App() {
               value={latex}
               readOnly
               spellCheck={false}
-              placeholder="El LaTeX reconegut apareixerà aquí..."
+              placeholder="El LaTeX apareixerà aquí..."
               aria-label="Resultat LaTeX"
             />
           </section>
